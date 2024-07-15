@@ -1,0 +1,31 @@
+{
+  "name": "online-shop-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidnan190/msg-online-shop-backend.git"
+  },
+  "author": "Andrei-David Nan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/davidnan190/msg-online-shop-backend/issues"
+  },
+  "homepage": "https://github.com/davidnan190/msg-online-shop-backend#readme",
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.14.10",
+    "eslint": "^9.7.0",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.5.3"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
