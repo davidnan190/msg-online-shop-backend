@@ -12,19 +12,22 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env.dev',
+      envFilePath: `.env.${(process.env.NODE_ENV as string) || 'dev'}`,
     }),
     TypeOrmModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        host: configService.getOrThrow('POSTGRES_HOST'),
-        port: configService.getOrThrow('POSTGRES_PORT'),
-        database: configService.getOrThrow('POSTGRES_DB'),
-        username: configService.getOrThrow('POSTGRES_USER'),
-        password: configService.getOrThrow('POSTGRES_PASSWORD'),
-        autoLoadEntities: configService.getOrThrow('DB_AUTOLOAD_ENTITIES'),
-        //  entities: [__dirname + '/**/*.domain{.ts,.js}'],
-        synchronize: configService.getOrThrow('DB_SYNCHRONIZE'),
+        host: configService.getOrThrow<string>('POSTGRES_HOST'),
+        port: configService.getOrThrow<number>('POSTGRES_PORT'),
+        database: configService.getOrThrow<string>('POSTGRES_DB'),
+        username: configService.getOrThrow<string>('POSTGRES_USER'),
+        password: configService.getOrThrow<string>('POSTGRES_PASSWORD'),
+        autoLoadEntities: configService.getOrThrow<boolean>(
+          'DB_AUTOLOAD_ENTITIES',
+        ),
+        synchronize: configService.getOrThrow<boolean>('DB_SYNCHRONIZE'),
+        logging: configService.get<boolean>('LOG_QUERIES') || false,
+        logger: 'advanced-console',
       }),
       inject: [ConfigService],
     }),

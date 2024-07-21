@@ -1,4 +1,10 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 import { Location } from 'src/products/domain/location.entity';
 import { Order } from './order.entity';
@@ -9,15 +15,15 @@ export class OrderDetail {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Order, (order) => order.orderDetails)
+  @ManyToOne(() => Order)
   @JoinColumn({ name: 'order_id' })
   order: Order;
 
-  @ManyToOne(() => Product, (product) => product.orderDetails)
+  @ManyToOne(() => Product, { eager: true })
   @JoinColumn({ name: 'product_id' })
   product: Product;
 
-  @ManyToOne(() => Location)
+  @ManyToOne(() => Location, { eager: true })
   @JoinColumn({ name: 'shipment_from_id' })
   shippedFrom: Location;
 

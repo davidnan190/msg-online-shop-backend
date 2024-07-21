@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({name: 'customers'})
+@Entity({ name: 'customers' })
 export class Customer {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -19,7 +19,4 @@ export class Customer {
 
   @Column({ name: 'email_address', type: 'varchar', length: 25 })
   emailAddress: string;
-
-  // @OneToMany(() => Order, order => order.customer)
-  // orders: Order[];
 }

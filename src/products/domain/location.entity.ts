@@ -1,7 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-
-import { OrderDetail } from 'src/orders/domain/order-detail.entity';
-import { Stock } from './stock.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'locations' })
 export class Location {
@@ -22,11 +19,4 @@ export class Location {
 
   @Column({ name: 'street_address', type: 'varchar', length: 25 })
   streetAddress: string;
-
-  @OneToMany(() => Stock, (stock) => stock.location)
-  stocks: Stock[];
-
-  @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.shippedFrom)
-  @JoinColumn({ name: 'order_details_id' })
-  orderDetails: OrderDetail[];
 }

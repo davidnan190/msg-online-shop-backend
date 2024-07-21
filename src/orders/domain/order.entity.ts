@@ -1,5 +1,6 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -19,7 +20,11 @@ export class Order {
   @JoinColumn({ name: 'customer_id' })
   customer: Customer;
 
-  @Column({ name: 'created_at', type: 'timestamp' })
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   createdAt: Date;
 
   @Column()
@@ -34,7 +39,9 @@ export class Order {
   @Column({ name: 'street_address', type: 'varchar', length: 25 })
   streetAddress: string;
 
-  @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.order)
-  @JoinColumn({ name: 'order_details_id' })
+  @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.order, {
+    onDelete: 'CASCADE',
+    eager: true,
+  })
   orderDetails: OrderDetail[];
 }
