@@ -14,9 +14,13 @@ import { OrderMapper } from '../mapper/order.mapper';
 import { OrderService } from '../service/order.service';
 import { UpdateOrderDto } from '../dto/order/update-order.dto';
 import { OrderDto } from '../dto/order/order.dto';
+import {
+  ORDER_FEATURE_BASE_PATH,
+  ORDER_FEATURE_NAME,
+} from '../config/orders.config';
 
-@ApiTags('orders')
-@Controller('orders')
+@ApiTags(ORDER_FEATURE_NAME)
+@Controller(ORDER_FEATURE_BASE_PATH)
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
@@ -114,16 +118,14 @@ export class OrderController {
   async updateOrder(
     @Param('orderId') orderId: string,
     @Body() dto: UpdateOrderDto,
-  ): Promise<{ message: string }> {
+  ): Promise<OrderDto> {
     const updatedOrderData = OrderMapper.fromUpdateDto(dto);
-    await this.orderService.updateOrder(
+    const order = await this.orderService.updateOrder(
       orderId,
       updatedOrderData,
       dto.desiredOrderItems,
     );
-    return {
-      message: 'Order has been updated successfully.',
-    };
+    return OrderMapper.toDto(order);
   }
 
   @Delete(':orderId')

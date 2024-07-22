@@ -4,7 +4,7 @@ import { CustomerDto } from '../dto/customer.dto';
 import { UpdateCustomerDto } from '../dto/update-customer.dto';
 
 export class CustomerMapper {
-  static toDto(entity: Customer): CustomerDto {
+  static toDto(entity: Omit<Customer, 'password'>): CustomerDto {
     const { id, firstName, lastName, username, emailAddress } = entity;
     return { id, firstName, lastName, username, emailAddress };
   }

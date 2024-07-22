@@ -112,7 +112,7 @@ export class ProductService {
     id: string,
     updatedProduct: Partial<Product>,
     categoryId?: string,
-  ): Promise<void> {
+  ): Promise<Product> {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -139,12 +139,15 @@ export class ProductService {
         }
       }
 
+      const mergedProduct = Object.assign(existingProduct, updatedProduct);
       await this.productRepository.updateProduct(
         id,
-        updatedProduct,
+        mergedProduct,
         queryRunner.manager,
       );
+
       await queryRunner.commitTransaction();
+      return mergedProduct;
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw error;

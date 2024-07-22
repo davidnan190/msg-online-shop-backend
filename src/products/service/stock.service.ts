@@ -150,18 +150,20 @@ export class StockService {
     stockId: string,
     newQuantity: number,
     manager?: EntityManager,
-  ): Promise<void> {
+  ): Promise<{ quantity: number }> {
     const repository = manager
       ? manager.getRepository(Stock)
       : this.stockRepository;
     await repository.update(stockId, newQuantity);
+
+    return { quantity: newQuantity };
   }
 
   async updateByProduct(
     productId: string,
     locationId: string,
     quantity: number,
-  ): Promise<void> {
+  ): Promise<Stock> {
     const productStock = await this.getByProductIdAndLocationId(
       productId,
       locationId,
@@ -173,7 +175,10 @@ export class StockService {
       );
     }
 
-    await this.stockRepository.update(productStock.id, quantity);
+    const updatedStock = Object.assign(productStock, { quantity });
+    await this.stockRepository.save(updatedStock);
+
+    return updatedStock;
   }
 
   async deleteStocksByProductId(

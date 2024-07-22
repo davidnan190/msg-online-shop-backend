@@ -16,9 +16,13 @@ import { UpdateStockQuantityDto } from '../dto/stock/update-stock-quantity.dto';
 import { StockDto } from '../dto/stock/stock.dto';
 import { StockMapper } from '../mapper/stock.mapper';
 import { CreateStockDto } from '../dto/stock/create-stock.dto';
+import {
+  STOCK_FEATURE_BASE_PATH,
+  STOCK_FEATURE_NAME,
+} from '../config/stock.config';
 
-@ApiTags('stock')
-@Controller('stock')
+@ApiTags(STOCK_FEATURE_NAME)
+@Controller(STOCK_FEATURE_BASE_PATH)
 export class StockController {
   constructor(private readonly stockService: StockService) {}
 
@@ -90,18 +94,17 @@ export class StockController {
   @ApiResponse({
     status: 200,
     description: 'Stock has been updated successfully.',
+    type: StockDto,
   })
   async updateByProductAndLocation(
     @Body() updateStockData: UpdateStockDto,
-  ): Promise<{ message: string }> {
-    await this.stockService.updateByProduct(
+  ): Promise<StockDto> {
+    const updatedStock = await this.stockService.updateByProduct(
       updateStockData.productId,
       updateStockData.locationId,
       updateStockData.quantity,
     );
-    return {
-      message: 'Stock has been updated successfully.',
-    };
+    return StockMapper.toDto(updatedStock);
   }
 
   @Put(':stockId')
@@ -114,11 +117,12 @@ export class StockController {
   async updateQuantity(
     @Param('stockId') stockId: string,
     @Body() updatedQuantity: UpdateStockQuantityDto,
-  ): Promise<{ message: string }> {
-    await this.stockService.update(stockId, updatedQuantity.quantity);
-    return {
-      message: 'Stock has been updated successfully.',
-    };
+  ): Promise<{ quantity: number }> {
+    const newQuantity = await this.stockService.update(
+      stockId,
+      updatedQuantity.quantity,
+    );
+    return newQuantity;
   }
 
   @Delete(':stockId')

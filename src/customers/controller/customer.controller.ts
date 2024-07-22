@@ -22,9 +22,13 @@ import { CustomerDto } from '../dto/customer.dto';
 import { Customer } from '../domain/customer.entity';
 import { CreateCustomerDto } from '../dto/create-customer.dto';
 import { UpdateCustomerDto } from '../dto/update-customer.dto';
+import {
+  CUSTOMER_FEATURE_BASE_PATH,
+  CUSTOMER_FEATURE_NAME,
+} from '../config/customer.config';
 
-@ApiTags('customers')
-@Controller('customers')
+@ApiTags(CUSTOMER_FEATURE_NAME)
+@Controller(CUSTOMER_FEATURE_BASE_PATH)
 export class CustomerController {
   constructor(private readonly customerService: CustomerService) {}
 
@@ -68,14 +72,12 @@ export class CustomerController {
   @ApiResponse({ status: 400, description: 'Invalid input data' })
   async register(
     @Body() registrationDto: CreateCustomerDto,
-  ): Promise<{ message: string }> {
-    await this.customerService.create(
+  ): Promise<CustomerDto> {
+    const createdCustomer = await this.customerService.create(
       CustomerMapper.fromCreateDto(registrationDto),
     );
 
-    return {
-      message: 'Customer registered successfully.',
-    };
+    return CustomerMapper.toDto(createdCustomer);
   }
 
   @Patch(':customerId')
@@ -92,14 +94,13 @@ export class CustomerController {
   async update(
     @Param('customerId') customerId: string,
     @Body() updatedCustomer: UpdateCustomerDto,
-  ): Promise<{ message: string }> {
-    await this.customerService.updateById(
+  ): Promise<CustomerDto> {
+    const customer = await this.customerService.updateById(
       customerId,
       CustomerMapper.fromUpdateDto(updatedCustomer),
     );
-    return {
-      message: 'Customer has been updated successfully.',
-    };
+
+    return CustomerMapper.toDto(customer);
   }
 
   @Delete(':customerId')

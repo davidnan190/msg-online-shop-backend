@@ -15,4 +15,8 @@ export class OrderDetailMapper {
       quantity,
     };
   }
+
+  static toDtoList(entities: OrderDetail[]): OrderDetailsDto[] {
+    return entities.map((entity) => this.toDto(entity));
+  }
 }

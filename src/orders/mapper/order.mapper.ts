@@ -1,5 +1,6 @@
 import { CreateOrderDto } from '../dto/order/create-order.dto';
 import { Order } from '../domain/order.entity';
+import { OrderDetailMapper } from './order-detail.mapper';
 import { OrderDto } from '../dto/order/order.dto';
 import { UpdateOrderDto } from '../dto/order/update-order.dto';
 
@@ -12,14 +13,7 @@ export class OrderMapper {
       county: order.county,
       streetAddress: order.streetAddress,
       createdAt: order.createdAt,
-      orderDetails: order.orderDetails.map((detail) => ({
-        id: detail.id,
-        product: detail.product
-          ? detail.product
-          : { message: 'Product no longer in stock' },
-        shippedFrom: detail.shippedFrom,
-        quantity: detail.quantity,
-      })),
+      orderDetails: OrderDetailMapper.toDtoList(order.orderDetails),
     };
   }
 

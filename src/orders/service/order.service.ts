@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
+import { Customer } from 'src/customers/domain/customer.entity';
 import { CustomerService } from 'src/customers/service/customer.service';
 import { DataSource } from 'typeorm';
 import { DesiredOrderItem } from '../types/desired-order-item.type';
@@ -184,7 +185,7 @@ export class OrderService {
   }
 
   private validateStockAvailability(
-    orderedItemsStocks: any[],
+    orderedItemsStocks: Stock[],
     desiredOrderItems: DesiredOrderItem[],
   ): void {
     const insufficientStockItems = [];
@@ -215,7 +216,7 @@ export class OrderService {
 
   private createOrderEntity(
     newOrder: Omit<Order, 'id' | 'orderDetails' | 'customer' | 'createdAt'>,
-    customer: any,
+    customer: Customer,
   ): Order {
     const order = new Order();
     order.customer = customer;
@@ -229,7 +230,7 @@ export class OrderService {
 
   private createOrderDetails(
     order: Order,
-    orderedItemsStocks: any[],
+    orderedItemsStocks: Stock[],
     desiredOrderItems: DesiredOrderItem[],
   ): OrderDetail[] {
     return desiredOrderItems.map((item) => {
@@ -247,7 +248,7 @@ export class OrderService {
   }
 
   private async updateStocks(
-    orderedItemsStocks: any[],
+    orderedItemsStocks: Stock[],
     desiredOrderItems: DesiredOrderItem[],
   ): Promise<void> {
     for (const item of desiredOrderItems) {

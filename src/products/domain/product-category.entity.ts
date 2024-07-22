@@ -5,7 +5,7 @@ export class ProductCategory {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: 15, unique: true })
   name: string;
 
   @Column({ nullable: true, type: 'text' })

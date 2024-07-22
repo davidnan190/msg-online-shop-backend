@@ -15,9 +15,14 @@ import { ProductCategoryDto } from '../dto/product-category/product-category.dto
 import { UpdateProductCategoryDto } from '../dto/product-category/update-product-category.dto';
 import { ProductCategoryMapper } from '../mapper/product-category.mapper';
 import { ProductCategoryService } from '../service/product-category.service';
+import { ProductMapper } from '../mapper/product.mapper';
+import {
+  CATEGORY_FEATURE_BASE_PATH,
+  CATEGORY_FEATURE_NAME,
+} from '../config/product-category.config';
 
-@ApiTags('categories')
-@Controller('categories')
+@ApiTags(CATEGORY_FEATURE_NAME)
+@Controller(CATEGORY_FEATURE_BASE_PATH)
 export class ProductCategoryController {
   constructor(private readonly categoryService: ProductCategoryService) {}
 
@@ -74,18 +79,17 @@ export class ProductCategoryController {
   @ApiResponse({
     status: 200,
     description: 'The product category has been updated successfully.',
+    type: ProductCategoryDto,
   })
   async update(
     @Param('categoryId') categoryId: string,
     @Body() updatedCategory: UpdateProductCategoryDto,
-  ): Promise<{ message: string }> {
-    await this.categoryService.update(
+  ): Promise<ProductCategoryDto> {
+    const category = await this.categoryService.update(
       categoryId,
       ProductCategoryMapper.fromUpdateDto(updatedCategory),
     );
-    return {
-      message: 'Product category has been updated successfully.',
-    };
+    return ProductCategoryMapper.toDto(category);
   }
 
   @Delete(':categoryId')

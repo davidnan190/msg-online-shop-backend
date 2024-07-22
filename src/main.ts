@@ -23,7 +23,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   const apiVersion = process.env.API_VERSION || '';
   const apiPrefix = `api${apiVersion ? `/${apiVersion}` : ''}`;
-  
+
   SwaggerModule.setup(apiPrefix, app, document);
 
   const port = configService.get<number>('SERVER_PORT') || DEFAULT_SERVER_PORT;

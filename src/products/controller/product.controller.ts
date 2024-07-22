@@ -19,9 +19,13 @@ import { UpdateProductDto } from '../dto/product/update-product.dto';
 import { Supplier } from '../enum/supplier.enum';
 import { SortOrder } from '../enum/sort-order.enum';
 import { SortFilter } from '../enum/sort-filter.enum';
+import {
+  PRODUCT_FEATURE_BASE_PATH,
+  PRODUCT_FEATURE_NAME,
+} from '../config/product.config';
 
-@ApiTags('products')
-@Controller('products')
+@ApiTags(PRODUCT_FEATURE_NAME)
+@Controller(PRODUCT_FEATURE_BASE_PATH)
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
@@ -128,16 +132,19 @@ export class ProductController {
   @ApiResponse({
     status: 200,
     description: 'The product has been updated successfully.',
+    type: ProductDto,
   })
   async update(
     @Param('productId') productId: string,
-    @Body() updatedProduct: UpdateProductDto,
-  ): Promise<void> {
-    return await this.productService.updateById(
+    @Body() updatedProductData: UpdateProductDto,
+  ): Promise<ProductDto> {
+    const updatedProduct = await this.productService.updateById(
       productId,
-      ProductMapper.fromUpdateDto(updatedProduct),
-      updatedProduct.categoryId,
+      ProductMapper.fromUpdateDto(updatedProductData),
+      updatedProductData.categoryId,
     );
+
+    return ProductMapper.toDto(updatedProduct);
   }
 
   @Delete(':productId')

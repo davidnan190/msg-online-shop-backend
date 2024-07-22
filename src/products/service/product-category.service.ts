@@ -46,7 +46,7 @@ export class ProductCategoryService {
   async update(
     id: string,
     updatedCategory: Partial<ProductCategory>,
-  ): Promise<void> {
+  ): Promise<ProductCategory> {
     await this.getById(id);
 
     if (updatedCategory.name) {
@@ -61,6 +61,7 @@ export class ProductCategoryService {
     }
 
     await this.categoryRepository.update(id, updatedCategory);
+    return this.categoryRepository.findById(id);
   }
 
   async delete(id: string): Promise<void> {

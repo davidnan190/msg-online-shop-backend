@@ -1,6 +1,7 @@
 import * as bcrypt from 'bcryptjs';
 
 import {
+  ConflictException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -43,39 +44,37 @@ export class CustomerService {
     return customer ? false : true;
   }
 
-  async create(newCustomer: Omit<Customer, 'id' | 'createdAt'>): Promise<void> {
+  async create(
+    newCustomer: Omit<Customer, 'id' | 'createdAt'>,
+  ): Promise<Omit<Customer, 'password'>> {
     const isEmailAvailable = await this.isEmailAvailable(
       newCustomer.emailAddress,
     );
     if (!isEmailAvailable) {
-      throw new HttpException(
-        'A customer already exists with that email',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new ConflictException('A customer already exists with that email');
     }
 
     newCustomer.password = this.hashPassword(newCustomer.password);
 
-    await this.customerRepository.create(newCustomer);
+    return await this.customerRepository.create(newCustomer);
   }
 
   async updateById(
     id: string,
-    updatedCustomer: Partial<Customer>,
-  ): Promise<void> {
+    updatedCustomer: Omit<Partial<Customer>, 'password'>,
+  ): Promise<Omit<Customer, 'password'>> {
     const customer = await this.getById(id);
 
     if (
       updatedCustomer.emailAddress &&
       !this.isEmailAvailable(updatedCustomer.emailAddress)
     ) {
-      throw new HttpException(
-        'A customer already exists with that email',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new ConflictException('A customer already exists with that email');
     }
 
-    return await this.customerRepository.updateById(id, updatedCustomer);
+    await this.customerRepository.updateById(id, updatedCustomer);
+
+    return this.customerRepository.findOneById(id);
   }
 
   async deleteById(id: string): Promise<void> {

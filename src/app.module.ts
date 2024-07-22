@@ -25,7 +25,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         autoLoadEntities: configService.getOrThrow<boolean>(
           'DB_AUTOLOAD_ENTITIES',
         ),
-        synchronize: configService.getOrThrow<boolean>('DB_SYNCHRONIZE'),
+        synchronize: configService.get<boolean>('DB_SYNCHRONIZE') || false,
         logging: configService.get<boolean>('LOG_QUERIES') || false,
         logger: 'advanced-console',
       }),
