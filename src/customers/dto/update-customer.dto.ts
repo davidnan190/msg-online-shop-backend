@@ -8,6 +8,7 @@ import {
 } from 'class-validator';
 
 import { ApiProperty } from '@nestjs/swagger';
+import { Role } from '../enum/role.enum';
 
 export class UpdateCustomerDto {
   @IsString()
@@ -65,4 +66,10 @@ export class UpdateCustomerDto {
     required: false,
   })
   emailAddress?: string;
+
+  @ApiProperty({
+    description: 'The role of the customer',
+    enum: Role
+  })
+  role: Role
 }

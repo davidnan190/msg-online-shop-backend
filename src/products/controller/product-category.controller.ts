@@ -20,6 +20,8 @@ import {
   CATEGORY_FEATURE_BASE_PATH,
   CATEGORY_FEATURE_NAME,
 } from '../config/product-category.config';
+import { AllowedRoles } from 'src/auth/decorators/allowed-roles.decorator';
+import { Role } from 'src/customers/enum/role.enum';
 
 @ApiTags(CATEGORY_FEATURE_NAME)
 @Controller(CATEGORY_FEATURE_BASE_PATH)
@@ -74,6 +76,7 @@ export class ProductCategoryController {
   }
 
   @Patch(':categoryId')
+  @AllowedRoles(Role.ADMIN)
   @HttpCode(200)
   @ApiOperation({ summary: 'Update an existing product category' })
   @ApiResponse({
@@ -93,6 +96,7 @@ export class ProductCategoryController {
   }
 
   @Delete(':categoryId')
+  @AllowedRoles(Role.ADMIN)
   @HttpCode(204)
   @ApiOperation({ summary: 'Delete a product category' })
   @ApiResponse({

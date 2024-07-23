@@ -20,6 +20,8 @@ import {
   STOCK_FEATURE_BASE_PATH,
   STOCK_FEATURE_NAME,
 } from '../config/stock.config';
+import { AllowedRoles } from 'src/auth/decorators/allowed-roles.decorator';
+import { Role } from 'src/customers/enum/role.enum';
 
 @ApiTags(STOCK_FEATURE_NAME)
 @Controller(STOCK_FEATURE_BASE_PATH)
@@ -41,6 +43,7 @@ export class StockController {
   }
 
   @Get('analytics/low-stock')
+  @AllowedRoles( Role.ADMIN)
   @HttpCode(200)
   @ApiOperation({ summary: 'Get items with low stock' })
   @ApiResponse({
@@ -56,6 +59,7 @@ export class StockController {
   }
 
   @Get('analytics/stock-value/:productId')
+  @AllowedRoles(Role.ADMIN)
   @HttpCode(200)
   @ApiOperation({ summary: 'Get total stock for a specific product' })
   @ApiResponse({
@@ -70,6 +74,7 @@ export class StockController {
   }
 
   @Post()
+  @AllowedRoles( Role.ADMIN)
   @HttpCode(201)
   @ApiOperation({ summary: 'Create new stock' })
   @ApiResponse({
@@ -89,6 +94,7 @@ export class StockController {
   }
 
   @Put()
+  @AllowedRoles( Role.ADMIN)
   @HttpCode(200)
   @ApiOperation({ summary: 'Update stock by product and location' })
   @ApiResponse({
@@ -108,6 +114,7 @@ export class StockController {
   }
 
   @Put(':stockId')
+  @AllowedRoles( Role.ADMIN)
   @HttpCode(200)
   @ApiOperation({ summary: 'Update stock quantity by stock ID' })
   @ApiResponse({
@@ -126,6 +133,7 @@ export class StockController {
   }
 
   @Delete(':stockId')
+  @AllowedRoles( Role.ADMIN)
   @HttpCode(204)
   @ApiOperation({ summary: 'Delete stock by stock ID' })
   @ApiResponse({

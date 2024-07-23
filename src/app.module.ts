@@ -1,10 +1,14 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
+import { APP_GUARD } from '@nestjs/core';
+import { AuthModule } from './auth/auth.module';
 import { CustomersModule } from './customers/customers.module';
 import { HealthController } from './health.controller';
+import { JwtGuard } from './auth/guards/jwt-auth.guard';
 import { Module } from '@nestjs/common';
 import { OrdersModule } from './orders/orders.module';
 import { ProductsModule } from './products/products.module';
+import { RouteRolesGuard } from './auth/guards/route-roles.guard';
 import { SharedModule } from './shared/shared.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
@@ -35,8 +39,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     OrdersModule,
     ProductsModule,
     CustomersModule,
+    AuthModule,
   ],
   controllers: [HealthController],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RouteRolesGuard,
+    },
+  ],
 })
 export class AppModule {}

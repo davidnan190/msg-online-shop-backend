@@ -23,6 +23,8 @@ import {
   PRODUCT_FEATURE_BASE_PATH,
   PRODUCT_FEATURE_NAME,
 } from '../config/product.config';
+import { AllowedRoles } from 'src/auth/decorators/allowed-roles.decorator';
+import { Role } from 'src/customers/enum/role.enum';
 
 @ApiTags(PRODUCT_FEATURE_NAME)
 @Controller(PRODUCT_FEATURE_BASE_PATH)
@@ -110,6 +112,7 @@ export class ProductController {
   }
 
   @Post()
+  @AllowedRoles(Role.ADMIN)
   @HttpCode(201)
   @ApiOperation({ summary: 'Create a new product' })
   @ApiResponse({
@@ -127,6 +130,7 @@ export class ProductController {
   }
 
   @Patch(':productId')
+  @AllowedRoles(Role.ADMIN)
   @HttpCode(200)
   @ApiOperation({ summary: 'Update an existing product' })
   @ApiResponse({
@@ -148,6 +152,7 @@ export class ProductController {
   }
 
   @Delete(':productId')
+  @AllowedRoles(Role.ADMIN)
   @HttpCode(204)
   @ApiOperation({ summary: 'Delete a product' })
   @ApiResponse({

@@ -26,6 +26,8 @@ import {
   CUSTOMER_FEATURE_BASE_PATH,
   CUSTOMER_FEATURE_NAME,
 } from '../config/customer.config';
+import { AllowedRoles } from 'src/auth/decorators/allowed-roles.decorator';
+import { Role } from '../enum/role.enum';
 
 @ApiTags(CUSTOMER_FEATURE_NAME)
 @Controller(CUSTOMER_FEATURE_BASE_PATH)
@@ -33,6 +35,7 @@ export class CustomerController {
   constructor(private readonly customerService: CustomerService) {}
 
   @Get(':customerId')
+  @AllowedRoles(Role.CUSTOMER, Role.ADMIN)
   @HttpCode(200)
   @ApiOperation({ summary: 'Get customer by ID' })
   @ApiParam({
@@ -50,6 +53,7 @@ export class CustomerController {
   }
 
   @Get()
+  @AllowedRoles(Role.CUSTOMER, Role.ADMIN)
   @HttpCode(200)
   @ApiOperation({ summary: 'Get all customers' })
   @ApiResponse({
@@ -81,6 +85,7 @@ export class CustomerController {
   }
 
   @Patch(':customerId')
+  @AllowedRoles(Role.ADMIN, Role.CUSTOMER)
   @HttpCode(200)
   @ApiOperation({ summary: 'Update a customer by ID' })
   @ApiParam({
@@ -104,6 +109,7 @@ export class CustomerController {
   }
 
   @Delete(':customerId')
+  @AllowedRoles(Role.CUSTOMER, Role.ADMIN)
   @HttpCode(204)
   @ApiOperation({ summary: 'Delete a customer by ID' })
   @ApiParam({
