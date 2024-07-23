@@ -1,7 +1,7 @@
 import { ExecutionContext, Injectable } from '@nestjs/common';
 
 import { AuthGuard } from '@nestjs/passport';
-import { IS_PUBLIC_RESOURCE_TAG } from '../constants/auth.constants';
+import { IS_PUBLIC_RESOURCE_TAG } from '../../constants/auth.constants';
 import { Reflector } from '@nestjs/core';
 
 @Injectable()

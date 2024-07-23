@@ -9,7 +9,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
 import { ProductService } from '../service/product.service';
 import { Product } from '../domain/product.entity';
 import { ProductMapper } from '../mapper/product.mapper';
@@ -25,8 +25,10 @@ import {
 } from '../config/product.config';
 import { AllowedRoles } from 'src/auth/decorators/allowed-roles.decorator';
 import { Role } from 'src/customers/enum/role.enum';
+import { API_AUTH_TYPE } from 'src/constants';
 
 @ApiTags(PRODUCT_FEATURE_NAME)
+@ApiBearerAuth(API_AUTH_TYPE)
 @Controller(PRODUCT_FEATURE_BASE_PATH)
 export class ProductController {
   constructor(private readonly productService: ProductService) {}

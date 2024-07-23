@@ -7,23 +7,30 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
 import { RegistrationDto } from '../dto/registration.dto';
 import { AuthService } from '../service/auth.service';
-import { Request } from 'express';
+
 import { AuthResponseDto } from '../dto/auth-response.dto';
 import { AuthMapper } from '../mapper/auth.mapper';
 import { RefreshedTokenDto } from '../dto/refreshed-jwt.dto';
-import { LocalAuthGuard } from '../guards/local-auth.guard';
-import { PublicResource } from '../decorators/public-resource.decorator';
-import { RefreshAuthGuard } from '../guards/refresh-auth.guard';
-import { CurrentUserId } from '../decorators/current-user-id.decorator';
 import {
   AUTH_FEATURE_BASE_PATH,
   AUTH_FEATURE_NAME,
 } from '../config/auth.config';
+import { PublicResource } from '../decorators/public-resource.decorator';
+import { LocalAuthGuard } from '../guards/authentication/local-auth.guard';
+import { RefreshAuthGuard } from '../guards/authentication/refresh-auth.guard';
+import { CurrentUserId } from '../decorators/current-user-id.decorator';
+import { FromCurrentUser } from '../decorators/current-user.decorator';
+import { CustomerDto } from 'src/customers/dto/customer.dto';
+import { CustomerMapper } from 'src/customers/mapper/customer.mapper';
+import { LoginDto } from '../dto/login.dto';
+import { RefreshTokenRequestDto } from '../dto/refresh-token-request.dto';
+import { API_AUTH_TYPE } from 'src/constants';
 
 @ApiTags(AUTH_FEATURE_NAME)
+@ApiBearerAuth(API_AUTH_TYPE)
 @Controller(AUTH_FEATURE_BASE_PATH)
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -52,11 +59,20 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Login a user' })
-  @ApiResponse({ status: 200, description: 'User successfully logged in' })
+  @ApiResponse({
+    status: 200,
+    description: 'User successfully logged in',
+    type: AuthResponseDto,
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  async login(@Req() req: Request): Promise<AuthResponseDto> {
+  @ApiBody({ type: LoginDto, description: 'User login details' })
+  async login(
+    @FromCurrentUser() loggedInUser: CustomerDto,
+  ): Promise<AuthResponseDto> {
     console.log('IN CONTROLLER');
-    const { customer, tokens } = await this.authService.login(req.user);
+    const { customer, tokens } = await this.authService.login(
+      CustomerMapper.fromDto(loggedInUser),
+    );
 
     return AuthMapper.toAuthResponseDto(customer, tokens);
   }
@@ -65,9 +81,18 @@ export class AuthController {
   @PublicResource()
   @UseGuards(RefreshAuthGuard)
   @HttpCode(HttpStatus.OK)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Refresh JWT Access Token' })
-  @ApiResponse({ status: 200, description: 'Token successfully refreshed' })
+  @ApiResponse({
+    status: 200,
+    description: 'Token successfully refreshed',
+    type: RefreshedTokenDto,
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiBody({
+    type: RefreshTokenRequestDto,
+    description: 'Refresh token request details',
+  })
   async refreshToken(
     @CurrentUserId() customerId: string,
   ): Promise<RefreshedTokenDto> {

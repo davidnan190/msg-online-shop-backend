@@ -1,4 +1,4 @@
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   Body,
   Controller,
@@ -18,8 +18,10 @@ import {
   ORDER_FEATURE_BASE_PATH,
   ORDER_FEATURE_NAME,
 } from '../config/orders.config';
+import { API_AUTH_TYPE } from 'src/constants';
 
 @ApiTags(ORDER_FEATURE_NAME)
+@ApiBearerAuth(API_AUTH_TYPE)
 @Controller(ORDER_FEATURE_BASE_PATH)
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}

@@ -15,7 +15,21 @@ export class CustomerMapper {
   }
 
   static fromUpdateDto(dto: UpdateCustomerDto): Customer {
-    const { id, firstName, lastName, password, username, emailAddress, role } = dto;
+    const { id, firstName, lastName, password, username, emailAddress, role } =
+      dto;
     return { id, firstName, lastName, password, username, emailAddress, role };
+  }
+
+  static fromDto(dto: CustomerDto): Customer {
+    const { id, firstName, lastName, username, emailAddress, role } = dto;
+    return {
+      id,
+      firstName,
+      lastName,
+      password: null,
+      username,
+      emailAddress,
+      role,
+    };
   }
 }

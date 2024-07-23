@@ -8,22 +8,28 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { ProductCategory } from '../domain/product-category.entity';
 import { CreateProductCategoryDto } from '../dto/product-category/create-product-category.dto';
 import { ProductCategoryDto } from '../dto/product-category/product-category.dto';
 import { UpdateProductCategoryDto } from '../dto/product-category/update-product-category.dto';
 import { ProductCategoryMapper } from '../mapper/product-category.mapper';
 import { ProductCategoryService } from '../service/product-category.service';
-import { ProductMapper } from '../mapper/product.mapper';
 import {
   CATEGORY_FEATURE_BASE_PATH,
   CATEGORY_FEATURE_NAME,
 } from '../config/product-category.config';
 import { AllowedRoles } from 'src/auth/decorators/allowed-roles.decorator';
 import { Role } from 'src/customers/enum/role.enum';
+import { API_AUTH_TYPE } from 'src/constants';
 
 @ApiTags(CATEGORY_FEATURE_NAME)
+@ApiBearerAuth(API_AUTH_TYPE)
 @Controller(CATEGORY_FEATURE_BASE_PATH)
 export class ProductCategoryController {
   constructor(private readonly categoryService: ProductCategoryService) {}

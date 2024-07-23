@@ -17,7 +17,12 @@ async function bootstrap() {
     .setDescription(
       'API documentation for the msg Career Start Online Shop - by Andrei-David Nan',
     )
-    .setVersion('0.6')
+    .setVersion('0.8')
+    .addBearerAuth({
+      type: 'http',
+      scheme: 'bearer',
+      bearerFormat: 'JWT',
+    }, 'JWT')
     .build();
 
   const document = SwaggerModule.createDocument(app, options);

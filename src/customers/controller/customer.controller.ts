@@ -4,6 +4,7 @@ import {
   ApiResponse,
   ApiParam,
   ApiBody,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import {
   Body,
@@ -28,8 +29,10 @@ import {
 } from '../config/customer.config';
 import { AllowedRoles } from 'src/auth/decorators/allowed-roles.decorator';
 import { Role } from '../enum/role.enum';
+import { API_AUTH_TYPE } from 'src/constants';
 
 @ApiTags(CUSTOMER_FEATURE_NAME)
+@ApiBearerAuth(API_AUTH_TYPE)
 @Controller(CUSTOMER_FEATURE_BASE_PATH)
 export class CustomerController {
   constructor(private readonly customerService: CustomerService) {}

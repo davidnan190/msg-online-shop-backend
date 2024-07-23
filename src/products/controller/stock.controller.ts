@@ -9,7 +9,7 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { StockService } from '../service/stock.service';
 import { UpdateStockDto } from '../dto/stock/update-stock.dto';
 import { UpdateStockQuantityDto } from '../dto/stock/update-stock-quantity.dto';
@@ -22,8 +22,10 @@ import {
 } from '../config/stock.config';
 import { AllowedRoles } from 'src/auth/decorators/allowed-roles.decorator';
 import { Role } from 'src/customers/enum/role.enum';
+import { API_AUTH_TYPE } from 'src/constants';
 
 @ApiTags(STOCK_FEATURE_NAME)
+@ApiBearerAuth(API_AUTH_TYPE)
 @Controller(STOCK_FEATURE_BASE_PATH)
 export class StockController {
   constructor(private readonly stockService: StockService) {}
