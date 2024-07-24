@@ -23,5 +23,5 @@ export class Customer {
   emailAddress: string;
 
   @Column({ name: 'role', type: 'varchar', length: 25 })
-  role: Role
+  role: Role;
 }

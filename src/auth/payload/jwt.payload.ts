@@ -1,4 +1,4 @@
-import { Role } from "src/customers/enum/role.enum";
+import { Role } from 'src/customers/enum/role.enum';
 
 export interface JwtPayload {
   readonly sub: string;

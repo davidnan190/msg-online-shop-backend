@@ -7,7 +7,13 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBody,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { RegistrationDto } from '../dto/registration.dto';
 import { AuthService } from '../service/auth.service';
 
@@ -69,7 +75,6 @@ export class AuthController {
   async login(
     @FromCurrentUser() loggedInUser: CustomerDto,
   ): Promise<AuthResponseDto> {
-    console.log('IN CONTROLLER');
     const { customer, tokens } = await this.authService.login(
       CustomerMapper.fromDto(loggedInUser),
     );

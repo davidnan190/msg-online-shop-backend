@@ -48,7 +48,7 @@ export class AuthService {
   async refreshToken(customerId: string): Promise<{ accessToken: string }> {
     const customer = await this.customerService.getById(customerId);
     return {
-      accessToken: await this.generateAccessToken(customer)
+      accessToken: await this.generateAccessToken(customer),
     };
   }
 
@@ -57,12 +57,20 @@ export class AuthService {
 
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload, {
-        secret: this.configService.getOrThrow<string>('JWT_ACCESS_TOKEN_SECRET'),
-        expiresIn: this.configService.getOrThrow<string>('JWT_ACCESS_TOKEN_TTL'),
+        secret: this.configService.getOrThrow<string>(
+          'JWT_ACCESS_TOKEN_SECRET',
+        ),
+        expiresIn: this.configService.getOrThrow<string>(
+          'JWT_ACCESS_TOKEN_TTL',
+        ),
       }),
       this.jwtService.signAsync(payload, {
-        secret: this.configService.getOrThrow<string>('JWT_REFRESH_TOKEN_SECRET'),
-        expiresIn: this.configService.getOrThrow<string>('JWT_REFRESH_TOKEN_TTL'),
+        secret: this.configService.getOrThrow<string>(
+          'JWT_REFRESH_TOKEN_SECRET',
+        ),
+        expiresIn: this.configService.getOrThrow<string>(
+          'JWT_REFRESH_TOKEN_TTL',
+        ),
       }),
     ]);
 

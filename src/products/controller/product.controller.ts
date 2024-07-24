@@ -9,7 +9,13 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiQuery,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { ProductService } from '../service/product.service';
 import { Product } from '../domain/product.entity';
 import { ProductMapper } from '../mapper/product.mapper';

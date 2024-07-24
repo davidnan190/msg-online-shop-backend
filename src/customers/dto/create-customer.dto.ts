@@ -49,7 +49,7 @@ export class CreateCustomerDto {
   @IsNotEmpty()
   @ApiProperty({
     description: 'The role of the customer',
-    enum: Role
+    enum: Role,
   })
-  role: Role
+  role: Role;
 }

@@ -22,10 +22,7 @@ export class RouteRolesGuard implements CanActivate {
 
     const request: Request = context.switchToHttp().getRequest();
     const user = request.user as Customer;
-    console.log(user)
 
-    return allowedRoles.some(
-      (allowedRole: Role) => user.role === allowedRole,
-    );
+    return allowedRoles.some((allowedRole: Role) => user.role === allowedRole);
   }
 }

@@ -16,12 +16,18 @@ export class RegistrationDto {
 
   @IsNotEmpty()
   @IsString()
-  @ApiProperty({ description: 'Username of the user', example: 'davidandrei123' })
+  @ApiProperty({
+    description: 'Username of the user',
+    example: 'davidandrei123',
+  })
   username: string;
 
   @IsNotEmpty()
   @IsEmail()
-  @ApiProperty({ description: 'Email address of the user', example: 'david.andrei@mail.com' })
+  @ApiProperty({
+    description: 'Email address of the user',
+    example: 'david.andrei@mail.com',
+  })
   emailAddress: string;
 
   @IsNotEmpty()

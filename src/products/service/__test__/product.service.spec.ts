@@ -135,7 +135,9 @@ describe('ProductService', () => {
     it('should throw NotFoundException if product not found', async () => {
       productRepository.findOneById.mockResolvedValue(null);
 
-      await expect(productService.findById('1')).rejects.toThrow(NotFoundException);
+      await expect(productService.findById('1')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
@@ -150,7 +152,9 @@ describe('ProductService', () => {
     it('should throw NotFoundException if product not found by name', async () => {
       productRepository.findByName.mockResolvedValue(null);
 
-      await expect(productService.findByName('Product Name')).rejects.toThrow(NotFoundException);
+      await expect(productService.findByName('Product Name')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
@@ -163,7 +167,9 @@ describe('ProductService', () => {
       productRepository.findOneById.mockResolvedValue(existingProduct);
       categoryService.getById.mockResolvedValue(category);
       productService.isNameAvailable = jest.fn().mockResolvedValue(true);
-      productRepository.updateProduct.mockResolvedValue(updatedProduct as unknown as Promise<void>);
+      productRepository.updateProduct.mockResolvedValue(
+        updatedProduct as unknown as Promise<void>,
+      );
 
       const result = await productService.updateById('1', updatedProduct, '1');
 
@@ -175,7 +181,9 @@ describe('ProductService', () => {
     it('should throw NotFoundException if product not found', async () => {
       productRepository.findOneById.mockResolvedValue(null);
 
-      await expect(productService.updateById('1', {})).rejects.toThrow(NotFoundException);
+      await expect(productService.updateById('1', {})).rejects.toThrow(
+        NotFoundException,
+      );
       expect(queryRunner.rollbackTransaction).toHaveBeenCalled();
     });
 
@@ -183,7 +191,9 @@ describe('ProductService', () => {
       productRepository.findOneById.mockResolvedValue(new Product());
       productService.isNameAvailable = jest.fn().mockResolvedValue(false);
 
-      await expect(productService.updateById('1', { name: 'Existing Product' })).rejects.toThrow(ConflictException);
+      await expect(
+        productService.updateById('1', { name: 'Existing Product' }),
+      ).rejects.toThrow(ConflictException);
       expect(queryRunner.rollbackTransaction).toHaveBeenCalled();
     });
   });
@@ -205,7 +215,9 @@ describe('ProductService', () => {
     it('should throw NotFoundException if product not found', async () => {
       productRepository.findOneById.mockResolvedValue(null);
 
-      await expect(productService.deleteById('1')).rejects.toThrow(NotFoundException);
+      await expect(productService.deleteById('1')).rejects.toThrow(
+        NotFoundException,
+      );
       expect(queryRunner.rollbackTransaction).toHaveBeenCalled();
     });
   });

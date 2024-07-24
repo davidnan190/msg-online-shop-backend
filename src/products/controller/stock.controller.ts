@@ -9,7 +9,12 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { StockService } from '../service/stock.service';
 import { UpdateStockDto } from '../dto/stock/update-stock.dto';
 import { UpdateStockQuantityDto } from '../dto/stock/update-stock-quantity.dto';
@@ -45,7 +50,7 @@ export class StockController {
   }
 
   @Get('analytics/low-stock')
-  @AllowedRoles( Role.ADMIN)
+  @AllowedRoles(Role.ADMIN)
   @HttpCode(200)
   @ApiOperation({ summary: 'Get items with low stock' })
   @ApiResponse({
@@ -76,7 +81,7 @@ export class StockController {
   }
 
   @Post()
-  @AllowedRoles( Role.ADMIN)
+  @AllowedRoles(Role.ADMIN)
   @HttpCode(201)
   @ApiOperation({ summary: 'Create new stock' })
   @ApiResponse({
@@ -96,7 +101,7 @@ export class StockController {
   }
 
   @Put()
-  @AllowedRoles( Role.ADMIN)
+  @AllowedRoles(Role.ADMIN)
   @HttpCode(200)
   @ApiOperation({ summary: 'Update stock by product and location' })
   @ApiResponse({
@@ -116,7 +121,7 @@ export class StockController {
   }
 
   @Put(':stockId')
-  @AllowedRoles( Role.ADMIN)
+  @AllowedRoles(Role.ADMIN)
   @HttpCode(200)
   @ApiOperation({ summary: 'Update stock quantity by stock ID' })
   @ApiResponse({
@@ -135,7 +140,7 @@ export class StockController {
   }
 
   @Delete(':stockId')
-  @AllowedRoles( Role.ADMIN)
+  @AllowedRoles(Role.ADMIN)
   @HttpCode(204)
   @ApiOperation({ summary: 'Delete stock by stock ID' })
   @ApiResponse({
