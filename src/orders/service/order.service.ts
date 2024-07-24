@@ -214,7 +214,7 @@ export class OrderService {
     }
   }
 
-  private createOrderEntity(
+  createOrderEntity(
     newOrder: Omit<Order, 'id' | 'orderDetails' | 'customer' | 'createdAt'>,
     customer: Customer,
   ): Order {
@@ -228,7 +228,7 @@ export class OrderService {
     return order;
   }
 
-  private createOrderDetails(
+  createOrderDetails(
     order: Order,
     orderedItemsStocks: Stock[],
     desiredOrderItems: DesiredOrderItem[],
@@ -247,7 +247,7 @@ export class OrderService {
     });
   }
 
-  private async updateStocks(
+  async updateStocks(
     orderedItemsStocks: Stock[],
     desiredOrderItems: DesiredOrderItem[],
   ): Promise<void> {
