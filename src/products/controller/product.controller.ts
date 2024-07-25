@@ -9,7 +9,13 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiQuery,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { ProductService } from '../service/product.service';
 import { Product } from '../domain/product.entity';
 import { ProductMapper } from '../mapper/product.mapper';
@@ -23,8 +29,12 @@ import {
   PRODUCT_FEATURE_BASE_PATH,
   PRODUCT_FEATURE_NAME,
 } from '../config/product.config';
+import { AllowedRoles } from 'src/auth/decorators/allowed-roles.decorator';
+import { Role } from 'src/customers/enum/role.enum';
+import { API_AUTH_TYPE } from 'src/constants';
 
 @ApiTags(PRODUCT_FEATURE_NAME)
+@ApiBearerAuth(API_AUTH_TYPE)
 @Controller(PRODUCT_FEATURE_BASE_PATH)
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
@@ -110,6 +120,7 @@ export class ProductController {
   }
 
   @Post()
+  @AllowedRoles(Role.ADMIN)
   @HttpCode(201)
   @ApiOperation({ summary: 'Create a new product' })
   @ApiResponse({
@@ -127,6 +138,7 @@ export class ProductController {
   }
 
   @Patch(':productId')
+  @AllowedRoles(Role.ADMIN)
   @HttpCode(200)
   @ApiOperation({ summary: 'Update an existing product' })
   @ApiResponse({
@@ -148,6 +160,7 @@ export class ProductController {
   }
 
   @Delete(':productId')
+  @AllowedRoles(Role.ADMIN)
   @HttpCode(204)
   @ApiOperation({ summary: 'Delete a product' })
   @ApiResponse({

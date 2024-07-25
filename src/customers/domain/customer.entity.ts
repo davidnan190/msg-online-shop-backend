@@ -1,5 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+import { Role } from '../enum/role.enum';
+
 @Entity({ name: 'customers' })
 export class Customer {
   @PrimaryGeneratedColumn('uuid')
@@ -14,9 +16,12 @@ export class Customer {
   @Column({ type: 'varchar', length: 15 })
   username: string;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: 255 })
   password: string;
 
   @Column({ name: 'email_address', type: 'varchar', length: 25 })
   emailAddress: string;
+
+  @Column({ name: 'role', type: 'varchar', length: 25 })
+  role: Role;
 }
