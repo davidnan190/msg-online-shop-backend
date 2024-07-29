@@ -21,6 +21,19 @@ import { LocationService } from '../service/location.service';
 export class LocationController {
   constructor(private readonly locationService: LocationService) {}
 
+  @Get()
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Get all available locations' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of all available locations',
+    type: [LocationDto],
+  })
+  async getAllLocations(): Promise<LocationDto[]> {
+    const availableLocations = await this.locationService.getAll();
+    return availableLocations.map((location) => LocationMapper.toDto(location));
+  }
+
   @Get('available')
   @HttpCode(200)
   @ApiOperation({ summary: 'Get all available locations in Romania' })
@@ -30,7 +43,9 @@ export class LocationController {
     type: [LocationDto],
   })
   async getAvailableLocations(): Promise<LocationDto[]> {
-    const availableLocations = await this.locationService.findAll();
+    const availableLocations = await this.locationService.getAllFromRomania();
     return availableLocations.map((location) => LocationMapper.toDto(location));
   }
+
+  
 }

@@ -195,9 +195,9 @@ export class StockService {
     }
   }
 
-  checkAvailability(availableStock: Stock, desiredQuantity: number): boolean {
-    if (desiredQuantity < 0) return false;
-    return availableStock.quantity - desiredQuantity >= 0;
+  checkAvailability(availableStock: Stock, quantity: number): boolean {
+    if (quantity < 0) return false;
+    return availableStock.quantity - quantity >= 0;
   }
 
   async delete(id: string): Promise<void> {

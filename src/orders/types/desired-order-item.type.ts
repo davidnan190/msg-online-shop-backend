@@ -18,5 +18,5 @@ export class DesiredOrderItem {
     description: 'The desired quantity of the product',
     example: 3,
   })
-  desiredQuantity: number;
+  quantity: number;
 }

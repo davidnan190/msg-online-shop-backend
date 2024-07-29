@@ -7,8 +7,8 @@ import { UpdateProductDto } from '../dto/product/update-product.dto';
 
 export class ProductMapper {
   static toDto(entity: Product): ProductDto {
-    const { id, name, description, price, weight, imageUrl, category } = entity;
-    return { id, name, description, price, weight, imageUrl, category };
+    const { id, name, description, price, weight, supplier, imageUrl, category } = entity;
+    return { id, name, description, price: price, weight, supplier, imageUrl, category };
   }
 
   static fromCreateDto(dto: CreateProductDto): Omit<Product, 'id'> {

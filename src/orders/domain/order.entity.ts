@@ -40,7 +40,7 @@ export class Order {
   streetAddress: string;
 
   @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.order, {
-    onDelete: 'CASCADE',
+    cascade: true,
     eager: true,
   })
   orderDetails: OrderDetail[];

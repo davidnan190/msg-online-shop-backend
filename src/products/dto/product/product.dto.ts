@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ProductCategoryDto } from '../product-category/product-category.dto';
+import { Supplier } from 'src/products/enum/supplier.enum';
 
 export class ProductDto {
   @ApiProperty({
@@ -22,6 +23,13 @@ export class ProductDto {
 
   @ApiProperty({ description: 'The weight of the product', example: 2.5 })
   weight: number;
+
+  @ApiProperty({
+    description: 'The supplier of the product',
+    example: 'msg systems Romania',
+    enum: Supplier
+  })
+  supplier: Supplier;
 
   @ApiProperty({
     description: 'The image URL of the product',

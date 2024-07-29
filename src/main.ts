@@ -12,6 +12,8 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   app.useGlobalPipes(new ValidationPipe());
 
+  app.enableCors();
+
   const options = new DocumentBuilder()
     .setTitle('msg Career Start Online Shop')
     .setDescription(
