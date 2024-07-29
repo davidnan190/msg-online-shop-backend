@@ -43,14 +43,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   ],
   controllers: [HealthController],
   providers: [
-    {
-      provide: APP_GUARD,
-      useClass: JwtGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: RouteRolesGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: JwtGuard,
+    // },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: RouteRolesGuard,
+    // },
   ],
 })
 export class AppModule {}

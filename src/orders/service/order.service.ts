@@ -66,6 +66,7 @@ export class OrderService {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
+    console.log(desiredOrderItems);
 
     try {
       const customer = await this.customerService.getById(customerId);
@@ -75,12 +76,18 @@ export class OrderService {
       this.validateStockAvailability(orderedItemsStocks, desiredOrderItems);
 
       const order = this.createOrderEntity(newOrder, customer);
+      console.log(desiredOrderItems);
+
       const orderDetails = this.createOrderDetails(
         order,
         orderedItemsStocks,
         desiredOrderItems,
       );
+
+      console.log(desiredOrderItems);
+
       order.orderDetails = orderDetails;
+      console.log(order);
       await queryRunner.manager.save(order);
       await this.updateStocks(orderedItemsStocks, desiredOrderItems);
 
@@ -196,12 +203,12 @@ export class OrderService {
           stock.location.id === item.locationId,
       );
 
-      if (!stock || stock.quantity < item.desiredQuantity) {
+      if (!stock || stock.quantity < item.quantity) {
         insufficientStockItems.push({
           productId: item.productId,
           locationId: item.locationId,
           availableQuantity: stock ? stock.quantity : 0,
-          desiredQuantity: item.desiredQuantity,
+          quantity: item.quantity,
         });
       }
     }
@@ -233,7 +240,12 @@ export class OrderService {
     orderedItemsStocks: Stock[],
     desiredOrderItems: DesiredOrderItem[],
   ): OrderDetail[] {
-    return desiredOrderItems.map((item) => {
+    console.log(desiredOrderItems)
+    console.log(desiredOrderItems[0])
+    
+
+    return desiredOrderItems.map((item: DesiredOrderItem) => {
+      console.log('quantity issss ' + item.quantity)
       const orderDetail = new OrderDetail();
       orderDetail.product = orderedItemsStocks.find(
         (stock) => stock.product.id === item.productId,
@@ -241,7 +253,11 @@ export class OrderService {
       orderDetail.shippedFrom = orderedItemsStocks.find(
         (stock) => stock.location.id === item.locationId,
       ).location;
-      orderDetail.quantity = item.desiredQuantity;
+      console.log('desired quantity >>>> ' + item.quantity);
+
+      orderDetail.quantity = item.quantity;
+      console.log('quantity >>>> ' + orderDetail.quantity);
+
       orderDetail.order = order;
       return orderDetail;
     });
@@ -259,7 +275,7 @@ export class OrderService {
       );
       await this.stockService.update(
         stock.id,
-        stock.quantity - item.desiredQuantity,
+        stock.quantity - item.quantity,
       );
     }
   }
