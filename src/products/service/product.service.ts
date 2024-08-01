@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
+import { DEFAULT_PRODUCT_IMAGE } from '../config/product.config';
 import { DataSource } from 'typeorm';
 import { Product } from '../domain/product.entity';
 import { ProductCategoryService } from './product-category.service';
@@ -87,6 +88,10 @@ export class ProductService {
         throw new ConflictException('A product already exists with that name');
       }
 
+      if (!newProduct.imageUrl) {
+        newProduct.imageUrl = DEFAULT_PRODUCT_IMAGE;
+      }
+
       const createdProduct = await this.productRepository.create(
         newProduct,
         queryRunner.manager,
@@ -129,10 +134,14 @@ export class ProductService {
       }
 
       if (updatedProduct.name) {
-        const isUpdatedNameAvailable = await this.isNameAvailable(
+        const productWithExistingName = await this.productRepository.findByName(
           updatedProduct.name,
         );
-        if (!isUpdatedNameAvailable) {
+
+        if (
+          productWithExistingName &&
+          productWithExistingName.id != updatedProduct.id
+        ) {
           throw new ConflictException(
             `Product with name ${updatedProduct.name} already exists`,
           );
